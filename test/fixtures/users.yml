@@ -1,1 +1,5 @@
-# empty
+# Se llama como users(:michael) y devuelve una instancia User
+michael:
+  name: Michael Example
+  email: michael@example.com
+  password_digest: <%= User.digest('password') %>
