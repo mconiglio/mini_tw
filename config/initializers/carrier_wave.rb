@@ -4,7 +4,7 @@ if Rails.env.production?
       # Configuration for Amazon S3
       :provider              => 'AWS',
       :aws_access_key_id     => ENV['AKIAJ5OHFGDB5P5IN73A'],
-      :aws_secret_access_key => ENV['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']
+      :aws_secret_access_key => ENV['YBpQvT/Z9YDIPZFCHTLwQahAp3vZkXEwe/BLrzDp'],
       :region                => ENV['us-east-1']
     }
     config.fog_directory     =  ENV['cdn.mcon']
