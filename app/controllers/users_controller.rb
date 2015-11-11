@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
+		@microposts = @user.microposts.paginate(page: params[:page])
 	end
 
 	def new
@@ -53,15 +54,6 @@ class UsersController < ApplicationController
 		end
 
 		# Before filters
-
-	    # Confirma estar logueado.
-	    def logged_in_user
-	      unless logged_in?
-	      	store_location #Si se quiere ir a una pagina pero falta loguearse, se graba el link deseado para despues de hacerlo
-	        flash[:danger] = "Please log in."
-	        redirect_to login_url
-	      end
-	    end
 
 	    # Confirma que el usuario es el logueado.
 	    def correct_user
