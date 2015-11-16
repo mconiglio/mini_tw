@@ -4,10 +4,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # Confirma estar logueado.
+    # Confirms that the user is logged.
     def logged_in_user
       unless logged_in?
-        store_location #Si se quiere ir a una pagina pero falta loguearse, se graba el link deseado para despues de hacerlo
+        store_location
         flash[:danger] = "Please log in."
         redirect_to login_url
       end

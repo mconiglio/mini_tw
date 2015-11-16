@@ -55,13 +55,13 @@ class UsersController < ApplicationController
 
 		# Before filters
 
-	    # Confirma que el usuario es el logueado.
+	    # Confirms that the user is the one that is logged.
 	    def correct_user
 	      @user = User.find(params[:id])
 	      redirect_to(root_url) unless current_user?(@user)
 	    end
 
-	    # Confirma si es admin.
+	    # Confirms that the user is admin.
 	    def admin_user
 	      redirect_to(root_url) unless current_user.admin?
 	    end
