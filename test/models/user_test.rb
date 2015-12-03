@@ -61,20 +61,50 @@ class UserTest < ActiveSupport::TestCase
 	    assert_not @user.valid?
 	end
 
-  	test "password should have a minimum length" do
-    	@user.password = @user.password_confirmation = "a" * 5
-    	assert_not @user.valid?
-  	end
-
-  	test "authenticated? should return false for a user with nil digest" do
-    	assert_not @user.authenticated?(:remember, '')
-  	end
-
-  	test "associated microposts should be destroyed" do
-	    @user.save
-	    @user.microposts.create!(content: "Lorem ipsum")
-	    assert_difference 'Micropost.count', -1 do
-	      @user.destroy
-	    end
+	test "password should have a minimum length" do
+  	@user.password = @user.password_confirmation = "a" * 5
+  	assert_not @user.valid?
 	end
+
+	test "authenticated? should return false for a user with nil digest" do
+  	assert_not @user.authenticated?(:remember, '')
+	end
+
+	test "associated microposts should be destroyed" do
+    @user.save
+    @user.microposts.create!(content: "Lorem ipsum")
+    assert_difference 'Micropost.count', -1 do
+      @user.destroy
+    end
+  end
+
+  test "should follow and unfollow a user" do
+    user = users(:user)
+    archer  = users(:archer)
+    assert_not user.following?(archer)
+    user.follow(archer)
+    assert user.following?(archer)
+    assert archer.followers.include?(user)
+    user.unfollow(archer)
+    assert_not user.following?(archer)
+  end
+
+
+  test "feed should have the right posts" do
+    user = users(:user)
+    archer  = users(:archer)
+    lana    = users(:lana)
+    # Posts from followed user
+    lana.microposts.each do |post_following|
+      assert user.feed.include?(post_following)
+    end
+    # Posts from self
+    user.microposts.each do |post_self|
+      assert user.feed.include?(post_self)
+    end
+    # Posts from unfollowed user
+    archer.microposts.each do |post_unfollowed|
+      assert_not user.feed.include?(post_unfollowed)
+    end
+  end
 end
