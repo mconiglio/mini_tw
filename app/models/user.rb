@@ -5,9 +5,13 @@ class User < ActiveRecord::Base
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   attr_accessor :remember_token, :activation_token, :reset_token
-  before_save :downcase_email
+  before_save :downcase_login
   before_create :create_activation_digest
-	validates(:name, presence: true, length: { maximum: 50 })
+	validates(:name, presence: true, length: { minimum: 6, maximum: 50 })
+  VALID_USERNAME_REGEX = /\A[a-z]{1}[a-z0-9_\.]+\z/i
+  validates(:username, presence: true, length: { maximum: 50 }, 
+          format: { with: VALID_USERNAME_REGEX },
+          uniqueness: { case_sensitive: false })
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 	validates(:email, presence: true, length: { maximum: 255 },
 					format: { with: VALID_EMAIL_REGEX }, 
@@ -17,8 +21,7 @@ class User < ActiveRecord::Base
 	
 	# Returns the hash digest of the given string.
 	def User.digest(string)
-  	cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-      	                                          BCrypt::Engine.cost
+  	cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
   	BCrypt::Password.create(string, cost: cost)
 	end
 
@@ -96,8 +99,9 @@ class User < ActiveRecord::Base
 
   private
 
-    # Converts email to all lower-case.
-    def downcase_email
+    # Converts username and email to all lower-case.
+    def downcase_login
+      self.username = username.downcase
       self.email = email.downcase
     end
 

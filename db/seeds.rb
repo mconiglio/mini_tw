@@ -1,4 +1,5 @@
 User.create!(name:  "Example User",
+             username: "exampleuser",
              email: "email@example.com",
              password:              "foobar",
              password_confirmation: "foobar",
@@ -8,9 +9,12 @@ User.create!(name:  "Example User",
 
 99.times do |n|
   name  = Faker::Name.name
+  username = name.delete(' ').delete('\'').downcase[0,10]
+  puts username
   email = "email-#{n+1}@example.com"
   password = "password"
   User.create!(name:  name,
+               username: username,
                email: email,
                password:              password,
                password_confirmation: password,
