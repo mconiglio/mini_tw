@@ -17,15 +17,54 @@
     </div>
   </div>
 <% else %>
-  <div class="center jumbotron">
-    <h1>Welcome to Mini Tw</h1>
-
-    <h2>
-      This is the home page for the
-      <%= link_to "Mini Tw", root_path %>
-      application.
-    </h2>
-
-    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-  </div>
+  <!DOCTYPE html>
+  <html class="site-full-height">
+  <head>
+    <%= render 'layouts/head' %>
+  </head>
+  <body class="site-top site-full-height">
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <%= link_to "mini tw", root_path, id: "logo", class: "masthead-brand" %>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><%= link_to "Home", root_path %></li>
+                  <li><%= link_to "Help", help_path %></li>
+                  <li><%= link_to "Log in", login_path %></li>
+                </ul>
+              </nav>
+            </div>
+            <% flash.each do |message_type, message| %>
+              <div class="alert alert-<%= message_type %>"><%= message %></div>
+            <% end %>
+          </div>
+          <div class="inner cover">
+            <h1 class="cover-heading">Welcome to Mini Tw</h1>
+            <p class="lead">Connect with your friends and other fascinating people. Get updates on the things that interest you. You are in control!</p>
+            <p class="lead">
+              <a class="btn btn-lg btn-primary" href="/signup">Sign up now!</a>
+            </p>
+          </div>
+          <div class="mastfoot">
+            <div class="inner">
+              <nav>
+                <ul>
+                  <li><a href="/about">About</a></li>
+                  <li><a href="/contact">Contact</a></li>
+                  <li><a href="http://weblog.rubyonrails.org/">News</a></li>
+                </ul>
+              </nav>
+              <small>
+                Based on <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  </html>
 <% end %>
